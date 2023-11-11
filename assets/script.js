@@ -1,12 +1,14 @@
-var searchVal = $('input').val();
 var searchBtn =$('.searchBtn');
-var APIkey = "1fa7fffbfafb577930d6b56f3508321";
-
+var APIkey = "ab74206522f65109633d42c234243129";
 
 //fetch lat and long of city
 var getCoords = function () {
-    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+searchVal+'&appid='+APIkey;
-  
+    var city = $('input').val();
+    console.log(encodeURIComponent(city));
+    console.log(city);
+
+    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
+
     fetch(apiUrl)
       .then(function (response) {
         if (response.ok) {
