@@ -7,3 +7,33 @@ header {
     color: white;
 }
 
+.whole-container {
+    display: flex;
+    flex-direction: row;
+}
+.left-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.center-column {
+    display: flex;
+    flex-direction: column;
+    margin-top: -45px;
+    margin-left: 25px;
+}
+
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.card {
+    margin: 10px;
+    padding-left: 10px;
+    padding-right: 25px;
+    background-color: purple;
+    color: white;
+}
