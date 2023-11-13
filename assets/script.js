@@ -1,6 +1,7 @@
 var searchBtn =$('.searchBtn');
 var APIkey = "ab74206522f65109633d42c234243129";
 
+
 //fetch lat and long of city
 var getCoords = function () {
     var city = $('input').val();
@@ -26,14 +27,15 @@ var getCityWeather =  function (data) {
  var lat= data[0].lat;
  var lon = data[0].lon;
 
- var currenUrl= "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+APIkey;
+ var currentUrl= "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid="+APIkey;
  var fiveDayUrl= "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+APIkey;
 
- fetch(currenUrl)
+ fetch(currentUrl)
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
             console.log(data);
+            displayTopWeather(data);
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -53,3 +55,18 @@ var getCityWeather =  function (data) {
 
 
 };
+
+//display weather on top dashboard
+
+var displayTopWeather = function (data) {
+  var name = data.name;
+  var tempK = data.main.temp;
+  var tempF = ((tempK -273.15)*1.8)+32;
+  var tempFround = tempF.toFixed(2);
+  var windSpeed = data.wind.speed;
+  var humidity = data.main.humidity;
+  //add date and wether emoji condtional
+
+  var content = "<h1>"+name+"</h1><p>Temp: "+tempFround+"&degF</p><p>Wind: "+windSpeed+" MPH</p><p>Humidity: "+humidity+"%</p>"
+  $(".cityInfo").append(content);
+}
