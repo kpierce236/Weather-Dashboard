@@ -12,13 +12,14 @@ var getCoords = function () {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
-            console.log(data);
             getCityWeather(data);
+            addToLocal(city);
           });
         } else {
           alert('Error: ' + response.statusText);
         }
       })
+
     };
 
 searchBtn.click(getCoords);
@@ -34,7 +35,6 @@ var getCityWeather =  function (data) {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
-            console.log(data);
             displayTopWeather(data);
           });
         } else {
@@ -46,14 +46,12 @@ var getCityWeather =  function (data) {
       .then(function (response) {
         if(response.ok) {
           response.json().then(function (data) {
-            console.log(data);
             displayFiveDays(data);
           });
         } else {
           alert('Error: ' + response.statusText);
         }
       })
-
 
 };
 
@@ -87,7 +85,43 @@ var displayFiveDays = function (data) {
 
     var content = "<div class='card'><h2>"+date+"</h1><img src='"+iconUrl+"'><p>Temp: "+temp+"&degF</p><p>Wind: "+windSpeed+" MPH</p><p>Humidity: "+humidity+"%</p></div>";
     $(".card-container").append(content);
-
-    console.log(date);
   }
 }
+
+var addToLocal = function (city) {
+
+  localStorage.setItem(city, "<div class=cityBtn>"+city+"</div");
+  //add button to div
+  var local = Object.keys(localStorage);
+   for (var i = 0; i < local.length; i++) {
+    if (localTest(local[i])) {
+      console.log("True");
+    } else {
+      console.log("False");
+    }
+
+   }
+}
+
+var localTest = function (city) {
+  
+  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
+
+  return fetch(apiUrl)
+  .then(function (response) {
+    if (response.ok) {
+      return response.json().then(function (data) {
+        if (data.length === 0) {
+          return false
+          
+        } else {
+          return true
+        }
+      });
+    } else {
+      console.log(3);
+      return false
+    }
+  })
+
+  };
