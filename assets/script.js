@@ -110,7 +110,6 @@ var displayFiveDays = function (data) {
 //adds the searched city to local storage to access it again
 var addToLocal = function (city) {
   if (matchCity(city)) {
-    console.log("true");
   } else {
     localStorage.setItem(city, "<div class=cityBtn>"+city+"</div>");
     $('.storedCities-container').append("<div class=cityBtn>"+city+"</div>");
