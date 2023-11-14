@@ -7,6 +7,24 @@ header {
     color: white;
 }
 
+.search-container {
+    margin: ;
+    display: flex;
+    flex-direction: column;
+}
+.btn-container {
+    display: flex;
+    justify-content:space-evenly ;
+    margin-top: 10px;
+}
+
+button {
+    background-color: purple; 
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
 .whole-container {
     display: flex;
     flex-direction: row;
@@ -22,7 +40,17 @@ header {
     margin-top: -45px;
     margin-left: 25px;
 }
+.cityBtn {
+    background-color: gray;
+    border-radius: 5px;
+    color:white;
+    text-align: center;
+    margin-top: 10px;
+}
 
+.cityBtn:hover {
+    opacity: 0.5;
+}
 
 .card-container {
     display: flex;

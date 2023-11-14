@@ -1,10 +1,21 @@
 var searchBtn =$('.searchBtn');
+var clearBtn =$('.clearBtn');
 var APIkey = "ab74206522f65109633d42c234243129";
+
+$( document ).ready(function() {
+  var local = Object.keys(localStorage);
+   for (var i = 0; i < local.length; i++) {
+    var key = localStorage.getItem(local[i]);
+    if (localTest(local[i])) {
+      $('.storedCities-container').append(key);
+    } 
+   }
+});
 
 
 //fetch lat and long of city
-var getCoords = function () {
-    var city = $('input').val();
+var getCoords = function (city) {
+    
 
     var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
 
@@ -22,7 +33,11 @@ var getCoords = function () {
 
     };
 
-searchBtn.click(getCoords);
+searchBtn.click(function() {
+  var cityVal = $('input').val();
+  getCoords(cityVal)
+});
+
 //fetch weather data 
 var getCityWeather =  function (data) {
  var lat= data[0].lat;
@@ -89,19 +104,29 @@ var displayFiveDays = function (data) {
 }
 
 var addToLocal = function (city) {
-
-  localStorage.setItem(city, "<div class=cityBtn>"+city+"</div");
-  //add button to div
-  var local = Object.keys(localStorage);
-   for (var i = 0; i < local.length; i++) {
-    if (localTest(local[i])) {
-      console.log("True");
-    } else {
-      console.log("False");
-    }
-
-   }
+  if (matchCity(city)) {
+    console.log("true");
+  } else {
+    localStorage.setItem(city, "<div class=cityBtn>"+city+"</div>");
+    $('.storedCities-container').append("<div class=cityBtn>"+city+"</div>");
+  }
 }
+
+var matchCity = function(city) {
+  var divArray = $('.cityBtn');
+  var cityFound = false;
+
+  divArray.each(function() {
+    var divText = $(this).text(); 
+    if (divText.toLowerCase() === city.toLowerCase()) {
+      cityFound = true;
+      return false 
+    } 
+});
+
+  return cityFound;
+}
+
 
 var localTest = function (city) {
   
@@ -125,3 +150,14 @@ var localTest = function (city) {
   })
 
   };
+  //cityBtn click event
+  $('.storedCities-container').on('click','div',function () {
+    var city = $(this).text();
+    getCoords(city);
+  })
+
+  //clear storage
+  clearBtn.click(function() {
+    localStorage.clear()
+    $('.storedCities-container').html("");
+  })
