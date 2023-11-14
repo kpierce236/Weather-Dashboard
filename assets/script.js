@@ -1,7 +1,10 @@
+//Search and Clear button elements
 var searchBtn =$('.searchBtn');
 var clearBtn =$('.clearBtn');
+//openweather API key
 var APIkey = "ab74206522f65109633d42c234243129";
 
+//fetchs local storage buttons when page loads
 $( document ).ready(function() {
   var local = Object.keys(localStorage);
    for (var i = 0; i < local.length; i++) {
@@ -13,9 +16,8 @@ $( document ).ready(function() {
 });
 
 
-//fetch lat and long of city
+//fetchs the latitude and longitude of the inputed city
 var getCoords = function (city) {
-    
 
     var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
 
@@ -33,12 +35,14 @@ var getCoords = function (city) {
 
     };
 
+//Click event that fetchs city coordinates when searched
 searchBtn.click(function() {
   var cityVal = $('input').val();
   getCoords(cityVal)
 });
 
-//fetch weather data 
+//Takes the longitude and latitude of from the getCoords API of the serched city 
+//    and fetchs the current weather data and five day weather data for that city
 var getCityWeather =  function (data) {
  var lat= data[0].lat;
  var lon = data[0].lon;
@@ -70,15 +74,15 @@ var getCityWeather =  function (data) {
 
 };
 
-//display weather on top dashboard
-
+//Displays current weather data on the top of the dashboard
 var displayTopWeather = function (data) {
   $(".cityInfo").html("");
   var name = data.name;
   var temp = data.main.temp;
   var windSpeed = data.wind.speed;
   var humidity = data.main.humidity;
-  //add date and wether emoji condtional
+
+
   var date = dayjs().format('M/D/YYYY');
   var icon = data.weather[0].icon;
   var iconUrl = "https://openweathermap.org/img/wn/"+icon+"@2x.png";
@@ -87,7 +91,7 @@ var displayTopWeather = function (data) {
   var content = "<h1>"+name+" ("+date+")"+"<img src='"+iconUrl+"'></h1><p>Temp: "+temp+"&degF</p><p>Wind: "+windSpeed+" MPH</p><p>Humidity: "+humidity+"%</p>";
   $(".cityInfo").append(content);
 }
-
+//Displays the five day forecast at the bottom of the weather dashboard
 var displayFiveDays = function (data) {
  $(".card-container").html("");
   for (var i = 1; i < 6; i++) {
@@ -103,6 +107,7 @@ var displayFiveDays = function (data) {
   }
 }
 
+//adds the searched city to local storage to access it again
 var addToLocal = function (city) {
   if (matchCity(city)) {
     console.log("true");
@@ -112,6 +117,7 @@ var addToLocal = function (city) {
   }
 }
 
+//checks if the searched city matches any existing cities in local storage before posting
 var matchCity = function(city) {
   var divArray = $('.cityBtn');
   var cityFound = false;
@@ -127,7 +133,7 @@ var matchCity = function(city) {
   return cityFound;
 }
 
-
+//Checks for whether the local storage key connects with api
 var localTest = function (city) {
   
   var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
@@ -150,13 +156,14 @@ var localTest = function (city) {
   })
 
   };
-  //cityBtn click event
+
+  //Local Sorage button click event
   $('.storedCities-container').on('click','div',function () {
     var city = $(this).text();
     getCoords(city);
   })
 
-  //clear storage
+  //Clear Storage button click event
   clearBtn.click(function() {
     localStorage.clear()
     $('.storedCities-container').html("");
