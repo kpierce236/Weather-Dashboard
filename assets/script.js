@@ -19,7 +19,7 @@ $( document ).ready(function() {
 //fetchs the latitude and longitude of the inputed city
 var getCoords = function (city) {
 
-    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
+    var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q='+encodeURIComponent(city)+'&appid='+APIkey;
 
     fetch(apiUrl)
       .then(function (response) {
